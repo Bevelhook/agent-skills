@@ -1,6 +1,20 @@
 # Agent Skills
 
-A basic framework for skills and functionality automation.
+name: AI Push
+
+on:
+  repository_dispatch:
+    types: jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.AI_TOKEN }}
+
+      - name: Apply changes
+        run: |
+          echo "Changes would be applied here" basic framework for skills and functionality automation.
 
 ## Structure
 - `skills/`: Contains individual skill modules.
