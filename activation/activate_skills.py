@@ -2,15 +2,18 @@
 
 import importlib
 import os
+import sys
 
 def load_skills():
-    skills_dir = "skills"
+    # Ensure the 'skills' directory is in the Python path
+    skills_dir = os.path.join(os.path.dirname(__file__), "..", "skills")
+    sys.path.append(skills_dir)
+    
     skills = []
-
     for file in os.listdir(skills_dir):
         if file.endswith(".py"):
             module_name = file[:-3]
-            module = importlib.import_module(f"{skills_dir}.{module_name}")
+            module = importlib.import_module(module_name)
             skill_class = getattr(module, module_name.capitalize())
             skills.append(skill_class())
     return skills
