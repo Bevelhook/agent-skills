@@ -1,0 +1,35 @@
+name: Groc Documentation Generation
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install Groc
+      run: npm install -g groc
+
+    - name: Generate Documentation
+      run: groc activation/**/*.py skills/*.py crest.py --out docs
+
+    - name: Deploy to GitHub Pages
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add docs
+        git commit -m "Update documentation"
+        git push origin gh-pages
